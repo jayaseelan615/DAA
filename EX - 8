@@ -1,0 +1,101 @@
+[24bcs108@mepcolinux ex9]$cat ex9
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class NQueensSolver {
+    private int n;
+    private char[][] board;
+    private int[] solutionVector;
+
+    public NQueensSolver(int n) {
+        this.n = n;
+        this.board = new char[n][n];
+        this.solutionVector = new int[n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '-');
+        }
+    }
+
+    public void solve() {
+        if (solveRecursive(0)) {
+            printSolution();
+        } else {
+            System.out.println("Solution does not exist for N=" + n);
+        }
+    }
+
+    private boolean solveRecursive(int row) {
+        if (row >= n) {
+            return true;
+        }
+
+        for (int col = 0; col < n; col++) {
+            if (isSafe(row, col)) {
+                board[row][col] = 'Q';
+                solutionVector[row] = col;
+
+                if (solveRecursive(row + 1)) {
+                    return true;
+                }
+
+                board[row][col] = '-';
+                solutionVector[row] = 0;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSafe(int row, int col) {
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') return false;
+        }
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') return false;
+        }
+        for (int i = row, j = col; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') return false;
+        }
+        return true;
+    }
+
+    private void printSolution() {
+        System.out.println("Matrix Solution:");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("Solution Vector : " + Arrays.toString(solutionVector));
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the dimensions of the chess board !! ");
+        int n = sc.nextInt();
+        NQueensSolver solver = new NQueensSolver(n);
+        solver.solve();
+        sc.close();
+    }
+}
+
+Enter the dimensions of the chess board !! 4
+Matrix Solution:
+- Q - -
+- - - Q
+Q - - -
+- - Q -
+Solution Vector : [1, 3, 0, 2]
+
+
+Enter the dimensions of the chess board !! 8
+Matrix Solution:
+Q - - - - - - -
+- - - - Q - - -
+- - - - - - - Q
+- - - - - Q - -
+- - Q - - - - -
+- - - - - - Q -
+- Q - - - - - -
+- - - Q - - - -
+Solution Vector : [0, 4, 7, 5, 2, 6, 1, 3]
