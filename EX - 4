@@ -1,0 +1,78 @@
+
+[24bcs102@mepcolinux ex4]$vi HeapSortMain.java
+import java.util.*;
+class Heaps {
+    static int size = 0;
+    public static void insert(int heap[], int value) {
+        heap[size] = value;
+        int current = size;
+        size++;
+        while (current > 0) {
+            int parent = (current - 1) / 2;
+            if (heap[parent] < heap[current]) {
+                int temp = heap[parent];
+                heap[parent] = heap[current];
+                heap[current] = temp;
+                current = parent;
+            }
+            else {
+                break;
+            }
+        }
+    }
+    public static void percolateDown(int heap[], int n, int i) {
+        int largest = i;
+        while (true) {
+            int left = 2 * largest + 1;
+            int right = 2 * largest + 2;
+            int temp = largest;
+            if (left < n && heap[left] > heap[temp])
+                temp = left;
+            if (right < n && heap[right] > heap[temp])
+                temp = right;
+            if (temp == largest)
+                break;
+            int swap = heap[largest];
+            heap[largest] = heap[temp];
+            heap[temp] = swap;
+            largest = temp;
+        }
+    }
+    public static int delete(int heap[]) {
+        int root = heap[0];
+        heap[0] = heap[size - 1];
+        size--;
+        percolateDown(heap, size, 0);
+        return root;
+    }
+    public static void printArray(int arr[], int n) {
+        for (int i = 0; i < n; i++)
+            System.out.print(arr[i] + " ");
+        System.out.println();
+    }
+}
+public class HeapSortMain {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+        int heap[] = new int[n];
+        int sorted[] = new int[n];
+        System.out.println("Enter"+ n +"elements:");
+        for (int i = 0; i < n; i++) {
+            int value = sc.nextInt();
+            Heaps.insert(heap, value);
+        }
+        System.out.println("Heap Array:");
+        Heaps.printArray(heap, n);
+        for (int i = n - 1; i >= 0; i--) {
+            sorted[i] = Heaps.delete(heap);
+        }
+        System.out.println("Sorted Array:");
+        Heaps.printArray(sorted, n);
+    }
+}
+[24bcs102@mepcolinux ex4]$exit
+exit
+[24bcs108@mepcolinux ex4]$cd ..
+[24bcs108@mepcolinux DAA]$ls
