@@ -1,0 +1,124 @@
+[24bcs108@mepcolinux ex3]$cat MergeSort.java
+import java.util.*;
+
+public class MergeSort {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter size of the Array: ");
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        System.out.println("Enter elements inside the array:");
+        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();
+        //System.out.println("\n--- Starting Merge Sort ---");
+        mergeSort(arr, 0, n - 1);
+        System.out.println("\nSorted Array is : " + Arrays.toString(arr));
+        sc.close();
+    }
+    static void mergeSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            System.out.println("Split the array : " + Arrays.toString(Arrays.copyOfRange(arr, left, right + 1)));
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+            merge(arr, left, mid, right);
+            System.out.print("  --> Merged: ");
+            printRange(arr, left, right);
+        }
+    }
+    static void merge(int[] arr, int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; ++i) L[i] = arr[left + i];
+        for (int j = 0; j < n2; ++j) R[j] = arr[mid + 1 + j];
+
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) arr[k++] = L[i++];
+            else arr[k++] = R[j++];
+        }
+        while (i < n1) arr[k++] = L[i++];
+        while (j < n2) arr[k++] = R[j++];
+    }
+
+    static void printRange(int[] arr, int low, int high) {
+        int[] sub = Arrays.copyOfRange(arr, low, high + 1);
+        System.out.println(Arrays.toString(sub));
+    }
+}
+[24bcs108@mepcolinux ex3]$cat QuickSort.java
+import java.util.*;
+
+public class QuickSort{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Array size: ");
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        System.out.println("Enter elements inside the array:");
+        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();
+
+        System.out.println("\n");
+        quickSort(arr, 0, n - 1);
+        System.out.println("\nSorted Array: " + Arrays.toString(arr));
+        sc.close();
+    }
+
+    static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            System.out.println("the pivot is at index " + pi + " : " + Arrays.toString(arr));
+
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        return i + 1;
+    }
+}
+
+
+Sorted Array is : [2, 3, 5, 7, 11]
+[24bcs108@mepcolinux ex3]$java MergeSort
+Enter size of the Array: 5
+Enter elements inside the array:
+11 7 5 2 3
+Split the array : [11, 7, 5, 2, 3]
+Split the array : [11, 7, 5]
+Split the array : [11, 7]
+  --> Merged: [7, 11]
+  --> Merged: [5, 7, 11]
+Split the array : [2, 3]
+  --> Merged: [2, 3]
+  --> Merged: [2, 3, 5, 7, 11]
+
+Sorted Array is : [2, 3, 5, 7, 11]
+[24bcs108@mepcolinux ex3]$java QuickSort
+Array size: 5
+Enter elements inside the array:
+6 3 5 7 11
+
+
+the pivot is at index4: [6, 3, 5, 7, 11]
+the pivot is at index3: [6, 3, 5, 7, 11]
+the pivot is at index1: [3, 5, 6, 7, 11]
+
+Sorted Array: [3, 5, 6, 7, 11]
+[24bcs108@mepcolinux ex3]$cd ..
